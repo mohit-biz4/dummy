@@ -1,0 +1,2 @@
+json_key_file(ENV["PLAY_STORE_JSON_KEY"] || "") # Path to the json secret file
+package_name("com.testfastlaneapp2_temp") # e.g. com.krausefx.app

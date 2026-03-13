@@ -1,0 +1,37 @@
+default_platform(:android)
+
+platform :android do
+  desc "Clean the project"
+  lane :clean do
+    gradle(task: "clean", project_dir: "android")
+  end
+
+  desc "Build debug APK"
+  lane :build_debug do
+    gradle(task: "assembleDebug", project_dir: "android")
+  end
+
+  desc "Build release APK"
+  lane :build_release do
+    gradle(task: "assembleRelease", project_dir: "android")
+  end
+
+  desc "Build release AAB"
+  lane :build_aab do
+    gradle(task: "bundleRelease", project_dir: "android")
+  end
+
+  desc "Run unit tests"
+  lane :test do
+    gradle(task: "test", project_dir: "android")
+  end
+
+  desc "Deploy to Firebase App Distribution"
+  lane :deploy_firebase do
+    build_debug
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      release_notes: "CI build from commit #{`git log -1 --pretty=%h`.strip}"
+    )
+  end
+end
